@@ -79,6 +79,7 @@
       for (const a of document.querySelectorAll("a.dl")) {
         const f = rel.assets.find(x => x.name.endsWith(a.dataset.asset));
         if (f) { a.href = f.browser_download_url; a.classList.remove("off"); a.textContent += ` (${Math.round(f.size / 1e6)} MB)`; }
+        else a.textContent = "Coming soon";
       }
     })
     .catch(() => { for (const a of document.querySelectorAll("a.dl")) a.textContent = "Coming soon"; });
