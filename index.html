@@ -63,7 +63,7 @@
 
   <footer>
     On Windows and Linux the Pi's ARM CPU is emulated, so it runs several times slower than on an Apple Silicon Mac.<br>
-    Free software under the GNU GPL v2+. Source: <a href="https://github.com/dsellerbrock/zero-lab">zero-lab</a> and its QEMU fork <a href="https://github.com/dsellerbrock/qemu-raspi-zero2w">qemu-raspi-zero2w</a> (source archives are attached to every <a href="https://github.com/dsellerbrock/pisim/releases">release</a>).
+    Free software under the GNU GPL v2+. Source: <a href="https://github.com/dsellerbrock/zero-lab">zero-lab</a> and its QEMU fork <a href="https://github.com/dsellerbrock/qemu-raspi-zero2w">qemu-raspi-zero2w</a> (source archives are attached to every <a href="https://github.com/dsellerbrock/zero-lab/releases">release</a>).
     Raspberry Pi OS is downloaded from raspberrypi.com on first run. Raspberry Pi is a trademark of Raspberry Pi Ltd; Zero Lab is not affiliated with it.
     <br><a href="https://ellerbrock.dev">ellerbrock.dev</a>
   </footer>
@@ -72,8 +72,10 @@
   const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux|X11/.test(ua) ? "linux" : "";
   const mine = document.querySelector(`[data-os="${os}"]`);
   if (mine) { mine.classList.add("mine"); mine.parentNode.insertBefore(mine, document.querySelector(".os")); }
-  // Buttons point at whatever the latest GitHub release holds; until one exists they stay greyed out.
-  fetch("https://api.github.com/repos/dsellerbrock/pisim/releases/latest").then(r => r.ok ? r.json() : Promise.reject())
+  // Buttons point at the latest release: zero-lab's CI publishes them (a version bump on main, every installer
+  // tested); older releases lived here on pisim, the fallback. Until one exists the buttons stay greyed out.
+  const latest = (repo) => fetch(`https://api.github.com/repos/dsellerbrock/${repo}/releases/latest`).then(r => r.ok ? r.json() : Promise.reject());
+  latest("zero-lab").catch(() => latest("pisim"))
     .then(rel => {
       document.getElementById("ver").textContent = "Latest: " + rel.tag_name + ".";
       for (const a of document.querySelectorAll("a.dl")) {
