@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Zero Lab</title>
+<meta name="description" content="A virtual Raspberry Pi Zero 2 W with a GPIO sandbox. Free.">
+<link rel="icon" href="icon.svg">
+<style>
+  :root { --bg:#fbfaf7; --fg:#1d1d1b; --muted:#6b6a64; --line:#e4e1d8; --card:#fff; --accent:#c51a4a; --accent-fg:#fff; }
+  @media (prefers-color-scheme: dark) { :root { --bg:#141413; --fg:#ecebe6; --muted:#9a998f; --line:#2c2b28; --card:#1c1c1a; --accent:#e8487a; --accent-fg:#141413; } }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:16px/1.55 ui-sans-serif, -apple-system, "Segoe UI", system-ui, sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:56px 16px 40px; }
+  header { display:flex; gap:18px; align-items:center; }
+  header img { width:72px; height:72px; }
+  h1 { margin:0; font-size:2rem; letter-spacing:-.02em; }
+  .tag { margin:2px 0 0; color:var(--muted); }
+  .free { display:inline-block; margin-top:28px; font-weight:600; }
+  p.lede { margin:8px 0 32px; }
+  .os { border:1px solid var(--line); background:var(--card); border-radius:12px; padding:20px; margin-bottom:14px; }
+  .os.mine { border-color:var(--accent); }
+  .row { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  h2 { margin:0; font-size:1.15rem; }
+  .req { color:var(--muted); font-size:.9rem; }
+  a.dl { background:var(--accent); color:var(--accent-fg); text-decoration:none; font-weight:600; padding:9px 16px; border-radius:8px; white-space:nowrap; }
+  a.dl.off { background:var(--line); color:var(--muted); pointer-events:none; }
+  ol { margin:12px 0 0; padding-left:20px; color:var(--muted); font-size:.95rem; }
+  code { font:.85em ui-monospace, Menlo, monospace; background:var(--line); padding:1px 5px; border-radius:4px; }
+  footer { margin-top:36px; color:var(--muted); font-size:.85rem; }
+  footer a { color:inherit; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <img src="icon.svg" alt="">
+    <div><h1>Zero Lab</h1><p class="tag">A Raspberry Pi Zero 2 W on your computer.</p></div>
+  </header>
+
+  <p class="free">Free. No account, no catch.</p>
+  <p class="lede">Boot a virtual Pi, wire up buttons, knobs and LEDs to its GPIO pins, and drop in your own code to build and run on it. <span id="ver"></span></p>
+
+  <section class="os" data-os="mac">
+    <div class="row"><div><h2>macOS</h2><div class="req">Apple Silicon (M1 or newer), macOS 26+. Fastest version.</div></div>
+      <a class="dl off" data-asset="macOS-arm64.dmg" href="#">Download .dmg</a></div>
+    <ol><li>Open the .dmg and drag <b>Zero Lab</b> to Applications.</li>
+      <li>First launch: System Settings → Privacy &amp; Security → <b>Open Anyway</b> (the app isn't notarized by Apple).</li></ol>
+  </section>
+
+  <section class="os" data-os="win">
+    <div class="row"><div><h2>Windows</h2><div class="req">Windows 10 or 11. Uses WSL2; first install takes 10–40 min.</div></div>
+      <a class="dl off" data-asset="linux-windows.zip" href="#">Download .zip</a></div>
+    <ol><li>Unzip, then double-click <b>Install Zero Lab (Windows).cmd</b>.</li>
+      <li>Start <b>Zero Lab</b> from your desktop. It opens in your browser.</li></ol>
+  </section>
+
+  <section class="os" data-os="linux">
+    <div class="row"><div><h2>Linux</h2><div class="req">Debian/Ubuntu, Fedora or Arch. First install takes 10–40 min.</div></div>
+      <a class="dl off" data-asset="linux-windows.zip" href="#">Download .zip</a></div>
+    <ol><li>Unzip and run <code>bash setup.sh</code> in that folder.</li>
+      <li>Start <b>Zero Lab</b> from your app menu.</li></ol>
+  </section>
+
+  <footer>
+    On Windows and Linux the Pi's ARM CPU is emulated, so it runs several times slower than on an Apple Silicon Mac.<br>
+    Free software under the GNU GPL v2+, built on QEMU. Full source is inside every download.
+    Raspberry Pi OS is downloaded from raspberrypi.com on first run. Raspberry Pi is a trademark of Raspberry Pi Ltd; Zero Lab is not affiliated with it.
+    <br><a href="https://ellerbrock.dev">ellerbrock.dev</a>
+  </footer>
+</main>
+<script>
+  const ua = navigator.userAgent, os = /Mac/.test(ua) ? "mac" : /Win/.test(ua) ? "win" : /Linux|X11/.test(ua) ? "linux" : "";
+  const mine = document.querySelector(`[data-os="${os}"]`);
+  if (mine) { mine.classList.add("mine"); mine.parentNode.insertBefore(mine, document.querySelector(".os")); }
+  // Buttons point at whatever the latest GitHub release holds; until one exists they stay greyed out.
+  fetch("https://api.github.com/repos/dsellerbrock/pisim/releases/latest").then(r => r.ok ? r.json() : Promise.reject())
+    .then(rel => {
+      document.getElementById("ver").textContent = "Latest: " + rel.tag_name + ".";
+      for (const a of document.querySelectorAll("a.dl")) {
+        const f = rel.assets.find(x => x.name.endsWith(a.dataset.asset));
+        if (f) { a.href = f.browser_download_url; a.classList.remove("off"); a.textContent += ` (${Math.round(f.size / 1e6)} MB)`; }
+      }
+    })
+    .catch(() => { for (const a of document.querySelectorAll("a.dl")) a.textContent = "Coming soon"; });
+</script>
+</body>
+</html>
