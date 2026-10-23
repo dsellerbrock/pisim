@@ -20,6 +20,8 @@
   .os { border:1px solid var(--line); background:var(--card); border-radius:12px; padding:20px; margin-bottom:14px; }
   .os.mine { border-color:var(--accent); }
   .row { display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; }
+  .row > div { flex:1 1 240px; min-width:0; }  /* the text wraps beside the button; it stacks only on narrow screens */
+  .row > a.dl { flex:none; }
   h2 { margin:0; font-size:1.15rem; }
   .req { color:var(--muted); font-size:.9rem; }
   a.dl { background:var(--accent); color:var(--accent-fg); text-decoration:none; font-weight:600; padding:9px 16px; border-radius:8px; white-space:nowrap; }
