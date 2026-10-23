@@ -47,22 +47,22 @@
   </section>
 
   <section class="os" data-os="win">
-    <div class="row"><div><h2>Windows</h2><div class="req">Windows 10 or 11. Uses WSL2; first install takes 10–40 min.</div></div>
-      <a class="dl off" data-asset="linux-windows.zip" href="#">Download .zip</a></div>
-    <ol><li>Unzip, then double-click <b>Install Zero Lab (Windows).cmd</b>.</li>
-      <li>Start <b>Zero Lab</b> from your desktop. It opens in your browser.</li></ol>
+    <div class="row"><div><h2>Windows</h2><div class="req">Windows 10 or 11, 64-bit. No WSL needed.</div></div>
+      <a class="dl off" data-asset="windows-x64-setup.exe" href="#">Download installer</a></div>
+    <ol><li>Run the installer. If SmartScreen warns, click <b>More info</b> → <b>Run anyway</b> (the app isn't code-signed).</li>
+      <li>Start <b>Zero Lab</b> from the Start menu.</li></ol>
   </section>
 
   <section class="os" data-os="linux">
-    <div class="row"><div><h2>Linux</h2><div class="req">Debian/Ubuntu, Fedora or Arch. First install takes 10–40 min.</div></div>
-      <a class="dl off" data-asset="linux-windows.zip" href="#">Download .zip</a></div>
-    <ol><li>Unzip and run <code>bash setup.sh</code> in that folder.</li>
-      <li>Start <b>Zero Lab</b> from your app menu.</li></ol>
+    <div class="row"><div><h2>Linux</h2><div class="req">64-bit x86 Linux. One file, nothing to install.</div></div>
+      <a class="dl off" data-asset="linux-x86_64.AppImage" href="#">Download AppImage</a></div>
+    <ol><li>Make it runnable: <code>chmod +x Zero-Lab-*.AppImage</code> (or Properties → Allow executing).</li>
+      <li>Double-click it to start Zero Lab.</li></ol>
   </section>
 
   <footer>
     On Windows and Linux the Pi's ARM CPU is emulated, so it runs several times slower than on an Apple Silicon Mac.<br>
-    Free software under the GNU GPL v2+. Source: <a href="https://github.com/dsellerbrock/zero-lab">zero-lab</a> and its QEMU fork <a href="https://github.com/dsellerbrock/qemu-raspi-zero2w">qemu-raspi-zero2w</a> (also inside every download).
+    Free software under the GNU GPL v2+. Source: <a href="https://github.com/dsellerbrock/zero-lab">zero-lab</a> and its QEMU fork <a href="https://github.com/dsellerbrock/qemu-raspi-zero2w">qemu-raspi-zero2w</a> (source archives are attached to every <a href="https://github.com/dsellerbrock/pisim/releases">release</a>).
     Raspberry Pi OS is downloaded from raspberrypi.com on first run. Raspberry Pi is a trademark of Raspberry Pi Ltd; Zero Lab is not affiliated with it.
     <br><a href="https://ellerbrock.dev">ellerbrock.dev</a>
   </footer>
